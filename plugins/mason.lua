@@ -1,36 +1,24 @@
 return {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
-    "hrsh7th/cmp-nvim-lsp-signature-help",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-buffer",
+    {"williamboman/mason.nvim", config = true },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = {{"williamboman/mason.nvim", config=true}},
+        config = function()
+            local lspconfig = require("mason-lspconfig")
+            lspconfig.setup {
+                ensure_installed = { "cssls", "lua_ls" }
+            }
+            lspconfig.setup_handlers {
+                function(server_name)
+                    require "lspconfig"[server_name].setup {}
+                end
+            }
+        end
+    },
     "nvim-treesitter/nvim-treesitter",
     "nvim-telescope/telescope.nvim",
-    {"olimorris/onedarkpro.nvim", priority=1000},
-    {'mrcjkb/rustaceanvim',version = '^5', lazy = false},
-    { "CRAG666/code_runner.nvim", config = true },
+    --{ 'mrcjkb/rustaceanvim',     version = '^5', lazy = false },
     "tpope/vim-fugitive",
-    "brianhuster/live-preview.nvim",
-    'ibhagwan/fzf-lua',
-    'echasnovski/mini.pick',
-    "andweeb/presence.nvim",
-    {
-        "christoomey/vim-tmux-navigator",
---[[        keys = {
-            { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-            { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-            { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-            { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-        }
-    },
-    ]]
-}
-    ,
-    { 'echasnovski/mini.nvim', version = false },
+    "christoomey/vim-tmux-navigator",
     "nvim-tree/nvim-web-devicons"
 }
-
